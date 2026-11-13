@@ -31,6 +31,7 @@ import {
   Download,
   Eye,
   FolderOpen,
+  FolderGit2,
   FileText,
   Globe,
   Heart,
@@ -83,6 +84,7 @@ const ConfigPage = lazy(() => import("@/pages/ConfigPage"));
 const DocsPage = lazy(() => import("@/pages/DocsPage"));
 const EnvPage = lazy(() => import("@/pages/EnvPage"));
 const FilesPage = lazy(() => import("@/pages/FilesPage"));
+const ProjectsPage = lazy(() => import("@/pages/ProjectsPage"));
 const SessionsPage = lazy(() => import("@/pages/SessionsPage"));
 const LogsPage = lazy(() => import("@/pages/LogsPage"));
 const AnalyticsPage = lazy(() => import("@/pages/AnalyticsPage"));
@@ -160,6 +162,7 @@ const BUILTIN_ROUTES_CORE: Record<string, ComponentType> = {
   "/": RootRedirect,
   "/sessions": SessionsPage,
   "/files": FilesPage,
+  "/projects": ProjectsPage,
   "/analytics": AnalyticsPage,
   "/models": ModelsPage,
   "/logs": LogsPage,
@@ -194,6 +197,7 @@ const BUILTIN_NAV_REST: NavItem[] = [
     icon: MessageSquare,
   },
   { path: "/files", label: "Files", icon: FolderOpen },
+  { path: "/projects", label: "Projects", icon: FolderGit2 },
   {
     path: "/analytics",
     labelKey: "analytics",
