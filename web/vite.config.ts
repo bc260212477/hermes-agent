@@ -82,6 +82,7 @@ function hermesDevToken(): Plugin {
 }
 
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH ?? "/",
   css: {
     // Tailwind runs through its Vite plugin. Keep unrelated ancestor PostCSS
     // configs (including BOM-marked JSON) out of this build.

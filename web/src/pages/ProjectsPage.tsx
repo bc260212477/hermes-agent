@@ -6,13 +6,46 @@ import { Button } from "@nous-research/ui/ui/components/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@nous-research/ui/ui/components/card";
 import { Input } from "@nous-research/ui/ui/components/input";
 import { Spinner } from "@nous-research/ui/ui/components/spinner";
-import { api, type ChatWorkspaceProject, type ChatWorkspaceRepo } from "@/lib/api";
+import {
+  api,
+  type ChatWorkspaceProject,
+  type ChatWorkspaceRepo,
+  type ChatWorkspacesResponse,
+} from "@/lib/api";
 import { abbreviateHomePath, writeStoredWorkspace } from "@/lib/chat-workspaces";
 import { useProfileScope } from "@/contexts/useProfileScope";
 
 type Project = ChatWorkspaceProject & { kind: "project" };
 type Repository = ChatWorkspaceRepo & { kind: "repository" };
 type Workspace = Project | Repository;
+
+const PREVIEW_WORKSPACES: ChatWorkspacesResponse = {
+  projects: [
+    {
+      id: "agent-foundry",
+      slug: "agent-foundry",
+      name: "Agent Foundry",
+      primary_path: "/home/demo/agent-foundry",
+      archived: false,
+      folders: [],
+    },
+    {
+      id: "hermes",
+      slug: "hermes",
+      name: "Hermes Agent",
+      primary_path: "/home/demo/hermes-agent",
+      archived: false,
+      folders: [],
+    },
+  ],
+  repos: [
+    { root: "/home/demo/client-api", label: "client-api", sessions: 12, last_active: 1731500000 },
+    { root: "/home/demo/research-lab", label: "research-lab", sessions: 4, last_active: 1731490000 },
+  ],
+  default_cwd: "/home/demo",
+  home: "/home/demo",
+  scan_enabled: true,
+};
 
 function workspacePath(workspace: Workspace): string {
   if (workspace.kind === "repository") return workspace.root;
@@ -36,7 +69,10 @@ export default function ProjectsPage() {
     setLoading(true);
     setError(null);
     try {
-      const data = await api.getChatWorkspaces(profile, true);
+      const data =
+        import.meta.env.VITE_HERMES_PREVIEW === "true"
+          ? PREVIEW_WORKSPACES
+          : await api.getChatWorkspaces(profile, true);
       setHome(data.home);
       setProjects([
         ...data.projects.filter((project) => !project.archived).map((project) => ({ ...project, kind: "project" as const })),
